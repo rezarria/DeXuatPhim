@@ -1,0 +1,40 @@
+@page "/user/list"
+@using DeXuatApp.DbContexts
+@inject MyIdentityDbContext context
+@inherits LayoutComponentBase
+<h1>Người dùng</h1>
+<table class="table table-sm">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">User</th>
+        <th/>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var contextUser in context.Users.Select(x => new { x.Id, x.UserName }))
+    {
+        <tr>
+            <th scope="row">@contextUser.Id</th>
+            <td>@contextUser.UserName</td>
+            <td>
+                <button class="btn btn-info">
+                    <i class="oi oi-eye"/>
+                </button>
+                <button class="btn btn-danger">
+                    <i class="oi oi-trash"/>
+                </button>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+<ModalDeleteUser></ModalDeleteUser>
+
+<section>
+
+</section>
+
+@code {
+    private ModalDeleteUser modalXoa = new();
+}
