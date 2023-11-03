@@ -1,0 +1,51 @@
+@page "/Test"
+@using DeXuatApp.CSV
+@using CsvHelper
+@using CsvHelper.Configuration
+@using System.Globalization
+<h3>Test</h3>
+
+<table>
+    <thead>
+    <tr>
+        <th>title</th>
+        <th>director</th>
+        <th>genres</th>
+        <th>crew</th>
+        <th>companies</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var a in data)
+    {
+        <tr>
+            <td>@a.Title</td>
+            <td>@a.Director</td>
+            <td>@a.Genres</td>
+            <td>
+                @(a.SpokenLanguages)
+            </td>
+            <td>@(a.ProductionCompanies)</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+@code {
+    private List<Model> data = new();
+
+    protected override void OnInitialized()
+    {
+        using (var reader = new StreamReader("/home/rez/MoRe/movie_dataset.csv"))
+        using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            PrepareHeaderForMatch = args => args.Header.ToLower(),
+        }))
+        {
+            var record = csv.GetRecords<Model>();
+            data.AddRange(record);
+        }
+    }
+
+}
